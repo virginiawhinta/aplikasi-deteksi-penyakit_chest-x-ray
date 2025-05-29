@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Klasifikasi Penyakit Paru-paru</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            function previewImage(event) {
+                const image = document.getElementById("preview");
+                image.src = URL.createObjectURL(event.target.files[0]);
+                image.style.display = "block";
+            }
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    </head>
+    <body class="bg-gray-100 text-gray-800">
+        <main class="">
+            <!-- Navbar -->
+            <div
+                class="z-[100] sticky top-0 bg-[#27ae60] border-b-2 border-black/50"
+            >
+                <nav class="flex justify-between items-center px-20 py-5">
+                    <div class="flex items-center">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            class="w-10 text-white icon icon-tabler icons-tabler-filled icon-tabler-lungs"
+                        >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M12 3a1 1 0 0 1 1 1v5a2 2 0 0 0 1 1.732v-3.475c0 -1.242 .995 -2.257 2.233 -2.257c.372 0 .738 .094 1.122 .307l.18 .117c1.695 1.23 2.76 3.035 3.773 6.34q .674 2.204 .692 5.06c.016 2.195 -1.657 4.024 -3.843 4.168l-.237 .008c-2.17 0 -3.92 -1.787 -3.92 -3.98v-4.146a4 4 0 0 1 -1.893 -1.112l-.107 -.118l-.107 .118a4 4 0 0 1 -1.892 1.112l-.001 4.146c0 2.193 -1.75 3.98 -3.919 3.98l-.268 -.01c-2.155 -.142 -3.827 -1.971 -3.811 -4.165q .018 -2.858 .692 -5.06c1.011 -3.307 2.076 -5.112 3.822 -6.375l.188 -.117a2.2 2.2 0 0 1 1.064 -.273c1.237 0 2.232 1.015 2.232 2.257l.001 3.475a2 2 0 0 0 .999 -1.732v-5a1 1 0 0 1 1 -1"
+                            />
+                        </svg>
+                        <button class="text-white font-bold text-2xl ml-2">
+                            Klasifikasi Citra
+                        </button>
+                    </div>
+                    <div class="flex items-center">
+                        <a
+                            href="/"
+                            class="px-4 py-1 text-white hover:underline rounded-full ml-10"
+                            >Beranda</a
+                        >
+                        <a
+                            href="/information"
+                            class="px-4 py-1 text-white hover:underline rounded-full ml-10"
+                            >Informasi</a
+                        >
+                        <a
+                            href="/process"
+                            class="px-4 py-1 text-white hover:underline rounded-full ml-10"
+                            >Proses</a
+                        >
+                        <a
+                            href="/predict"
+                            class="px-4 py-1 text-white hover:underline rounded-full ml-10"
+                            >Prediksi</a
+                        >
+                        <a
+                            href="/about"
+                            class="px-4 py-1 text-white hover:underline rounded-full ml-10"
+                            >Tentang</a
+                        >
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Information Section -->
+            <div
+                class="h-full mt-[-5rem] bg-gradient-to-r from-[#e0f7e7] to-[#f4fef4]"
+            >
+                <div class="container mx-auto px-10 py-20">
+                    <h1
+                        class="text-4xl font-bold text-center text-[#27ae60] mb-12 mt-10"
+                    >
+                        Proses Klasifikasi Penyakit Paru-paru
+                    </h1>
+
+                    <!-- Dataset -->
+                    <h2 class="text-2xl font-bold text-[#27ae60] mb-4">
+                        1. Dataset
+                    </h2>
+                    <p class="text-lg mb-6">
+                        Dataset Chest X-ray yang digunakan merupakan gabungan
+                        dataset dari Kaggle yang dapat diakses pada link Kaggle
+                        berikut:
+                        <a
+                            href="https://www.kaggle.com/datasets/tawsifurrahman/tuberculosis-tb-chest-xray-dataset"
+                            class="text-[#27ae60]"
+                            target="_blank"
+                            >Dataset Tuberkulosis</a
+                        >
+                        dan
+                        <a
+                            href="https://www.kaggle.com/datasets/paultimothymooney/chest-xray-Pneumonia"
+                            class="text-[#27ae60]"
+                            target="_blank"
+                            >Dataset Pneumonia</a
+                        >. Dataset ini memiliki 3 kelas yaitu normal,
+                        tuberkulosis, dan pneumonia.
+                    </p>
+                    <h3 class="font-bold text-xl mb-4">Contoh Data Citra:</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-12">
+                        <div class="text-center">
+                            <h3 class="font-bold text-lg">Normal</h3>
+                            <img
+                                src="images/normal.jpg"
+                                alt="Normal X-ray"
+                                class="mx-auto rounded-lg shadow-lg w-72 h-72"
+                            />
+                        </div>
+                        <div class="text-center">
+                            <h3 class="font-bold text-lg">Tuberkulosis</h3>
+                            <img
+                                src="images/tuberkulosis.jpg"
+                                alt="Tuberculosis X-ray"
+                                class="mx-auto rounded-lg shadow-lg w-72 h-72"
+                            />
+                        </div>
+                        <div class="text-center">
+                            <h3 class="font-bold text-lg">Pneumonia</h3>
+                            <img
+                                src="images/pneumonia.jpg"
+                                alt="Pneumonia X-ray"
+                                class="mx-auto rounded-lg shadow-lg w-72 h-72"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Augmentasi Data -->
+                    <h2 class="text-2xl font-bold text-[#27ae60] mb-4">
+                        2. Augmentasi Data Citra
+                    </h2>
+                    <p class="text-lg mb-6">
+                        Dilakukan augmentasi pada data citra dengan kelas
+                        tuberkulosis untuk meningkatkan keragaman data
+                        pelatihan. Augmentasi ini mencakup berbagai teknik
+                        seperti rotasi, flipping, zooming, dan perubahan
+                        pencahayaan untuk meningkatkan generalisasi model.
+                    </p>
+                    <h3 class="font-bold text-xl mb-4">
+                        Contoh Hasil Augmentasi Data:
+                    </h3>
+                    <div
+                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8 mb-12 justify-items-center"
+                    >
+                        <div class="text-center mr-[-25%]">
+                            <h3 class="font-bold text-lg mb-4">
+                                Sebelum Augmentasi
+                            </h3>
+                            <img
+                                src="images/sebelum_augmentasi.png"
+                                alt="Sebelum Augmentasi"
+                                class="mx-auto rounded-lg shadow-lg w-80 h-80 object-cover"
+                            />
+                        </div>
+                        <div class="text-center ml-[-25%]">
+                            <h3 class="font-bold text-lg mb-4">
+                                Sesudah Augmentasi
+                            </h3>
+                            <img
+                                src="images/sesudah_augmentasi.png"
+                                alt="Sesudah Augmentasi"
+                                class="mx-auto rounded-lg shadow-lg w-80 h-80 object-cover"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Ekstraksi Fitur GLCM -->
+                    <h2 class="text-2xl font-bold text-[#27ae60] mb-4">
+                        3. Ekstraksi Fitur GLCM
+                    </h2>
+                    <p class="text-lg mb-6">
+                        Dilakukan ekstraksi fitur GLCM dengan tahapan sebagai
+                        berikut:
+                    </p>
+                    <div
+                        class="grid grid-cols-1 sm:grid-cols-1 gap-8 mb-12 justify-items-center"
+                    >
+                        <div class="text-center">
+                            <h3 class="font-bold text-xl mb-4">
+                                Tahapan Ekstraksi Fitur GLCM
+                            </h3>
+                            <img
+                                src="images/tahapan_glcm.png"
+                                alt="Tahapan GLCM"
+                                class="mx-auto rounded-lg shadow-lg w-[100%]"
+                            />
+                        </div>
+                    </div>
+
+                    <h2 class="text-2xl font-bold text-[#27ae60] mb-4">
+                        4. Hasil Ekstraksi Fitur GLCM (CSV)
+                    </h2>
+                    <p class="text-lg mb-6">
+                        Berikut adalah hasil ekstraksi fitur GLCM dalam bentuk
+                        tabel dari file CSV:
+                    </p>
+                    <div
+                        class="grid grid-cols-1 sm:grid-cols-1 gap-8 mb-12 justify-items-center"
+                    >
+                        <div class="text-center">
+                            <h3 class="font-bold text-xl mb-4">Fitur GLCM</h3>
+                            <div id="glcm-table-container"></div>
+                            <!-- Tempat untuk menampilkan tabel -->
+                        </div>
+                    </div>
+
+                    <script>
+                        // Memuat file CSV secara otomatis saat halaman dimuat
+                        window.onload = function () {
+                            fetch("/data/glcm_features.csv")
+                                .then((response) => response.text())
+                                .then((csvData) => {
+                                    Papa.parse(csvData, {
+                                        header: true,
+                                        complete: function (results) {
+                                            generateTable(results.data);
+                                        },
+                                    });
+                                });
+                        };
+
+                        // Fungsi untuk menghasilkan tabel HTML dari data CSV
+                        function generateTable(data) {
+                            const container = document.getElementById(
+                                "glcm-table-container"
+                            );
+                            const table = document.createElement("table");
+                            table.classList.add(
+                                "table-auto",
+                                "border-collapse",
+                                "w-full"
+                            );
+                            const thead = document.createElement("thead");
+                            const tbody = document.createElement("tbody");
+
+                            // Membuat header tabel dari data pertama (kolom CSV)
+                            const headerRow = document.createElement("tr");
+                            Object.keys(data[0]).forEach((key) => {
+                                const th = document.createElement("th");
+                                th.classList.add("border", "px-4", "py-2");
+                                th.textContent = key;
+                                headerRow.appendChild(th);
+                            });
+                            thead.appendChild(headerRow);
+                            table.appendChild(thead);
+
+                            // Membuat baris-baris tabel dari data CSV
+                            data.forEach((row) => {
+                                const tr = document.createElement("tr");
+                                Object.values(row).forEach((value) => {
+                                    const td = document.createElement("td");
+                                    td.classList.add("border", "px-4", "py-2");
+                                    td.textContent = value;
+                                    tr.appendChild(td);
+                                });
+                                tbody.appendChild(tr);
+                            });
+
+                            table.appendChild(tbody);
+                            container.innerHTML = ""; // Hapus konten lama
+                            container.appendChild(table);
+                        }
+                    </script>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <div class="px-32 py-5 bg-[#27ae60]">
+            <div class="flex justify-between py-5 font-medium text-white">
+                <h1>&copy; 2025 Klasifikasi Penyakit Paru-paru</h1>
+                <a href="#" class="hover:underline">Whinta Virginia Putri</a>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Klasifikasi Penyakit Paru-paru</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            function previewImage(event) {
+                const image = document.getElementById("preview");
+                image.src = URL.createObjectURL(event.target.files[0]);
+                image.style.display = "block";
+            }
+        </script>
+    </head>
+    <body class="bg-gray-100 text-gray-800">
+        <main class="h-[100vh]">
+            <!-- Navbar -->
+            <div
+                class="z-[100] sticky top-0 bg-[#27ae60] border-b-2 border-black/50"
+            >
+                <nav class="flex justify-between items-center px-20 py-5">
+                    <div class="flex items-center">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            class="w-10 text-white icon icon-tabler icons-tabler-filled icon-tabler-lungs"
+                        >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M12 3a1 1 0 0 1 1 1v5a2 2 0 0 0 1 1.732v-3.475c0 -1.242 .995 -2.257 2.233 -2.257c.372 0 .738 .094 1.122 .307l.18 .117c1.695 1.23 2.76 3.035 3.773 6.34q .674 2.204 .692 5.06c.016 2.195 -1.657 4.024 -3.843 4.168l-.237 .008c-2.17 0 -3.92 -1.787 -3.92 -3.98v-4.146a4 4 0 0 1 -1.893 -1.112l-.107 -.118l-.107 .118a4 4 0 0 1 -1.892 1.112l-.001 4.146c0 2.193 -1.75 3.98 -3.919 3.98l-.268 -.01c-2.155 -.142 -3.827 -1.971 -3.811 -4.165q .018 -2.858 .692 -5.06c1.011 -3.307 2.076 -5.112 3.822 -6.375l.188 -.117a2.2 2.2 0 0 1 1.064 -.273c1.237 0 2.232 1.015 2.232 2.257l.001 3.475a2 2 0 0 0 .999 -1.732v-5a1 1 0 0 1 1 -1"
+                            />
+                        </svg>
+                        <button class="text-white font-bold text-2xl ml-2">
+                            Klasifikasi Citra
+                        </button>
+                    </div>
+                    <div class="flex items-center">
+                        <a
+                            href="/"
+                            class="px-4 py-1 text-white hover:underline rounded-full ml-10"
+                            >Beranda</a
+                        >
+                        <a
+                            href="/information"
+                            class="px-4 py-1 text-white hover:underline rounded-full ml-10"
+                            >Informasi</a
+                        >
+                        <a
+                            href="/process"
+                            class="px-4 py-1 text-white hover:underline rounded-full ml-10"
+                            >Proses</a
+                        >
+                        <a
+                            href="/predict"
+                            class="px-4 py-1 text-white hover:underline rounded-full ml-10"
+                            >Prediksi</a
+                        >
+                        <a
+                            href="/about"
+                            class="px-4 py-1 text-white hover:underline rounded-full ml-10"
+                            >Tentang</a
+                        >
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Prediction Result Section -->
+            <div
+                class="h-full mt-[-5rem] flex items-center justify-center bg-gradient-to-r from-[#e0f7e7] to-[#f4fef4]"
+            >
+                <div
+                    class="px-28 py-20 max-w-4xl mx-auto bg-white shadow-md rounded-lg"
+                >
+                    <h1
+                        class="text-3xl font-bold text-center text-[#27ae60] mb-6"
+                    >
+                        Hasil Prediksi
+                    </h1>
+                    {% if error %}
+                    <p class="text-red-600 text-center">{{ error }}</p>
+                    {% else %}
+                    <p class="text-lg text-gray-700 text-center">
+                        Prediksi:
+                        <strong class="text-[#27ae60]">{{ prediction }}</strong>
+                    </p>
+                    <h3 class="mt-4 text-lg text-gray-700 text-center">
+                        Probabilitas:
+                    </h3>
+                    <ul class="text-center">
+                        {% for label, prob in probabilities.items() %}
+                        <li class="text-lg">
+                            {{ label }}: {{ prob | round(2) }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    <div class="mt-10 text-center">
+                        <a
+                            href="{{ url_for('home') }}"
+                            class="px-6 py-4 bg-[#27ae60] text-white font-semibold rounded-lg hover:bg-[#1e8a50]"
+                            >Kembali ke Halaman Utama</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <div class="px-32 py-5 bg-[#27ae60]">
+            <div class="flex justify-between py-5 font-medium text-white">
+                <h1>&copy; 2025 Klasifikasi Penyakit Paru-paru</h1>
+                <a href="#" class="hover:underline">Whinta Virginia Putri</a>
+            </div>
+        </div>
+    </body>
+</html>
