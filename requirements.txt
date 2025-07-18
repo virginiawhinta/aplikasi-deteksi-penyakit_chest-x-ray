@@ -1,4 +1,4 @@
-tensorflow-cpu
+tensorflow
 Flask
 numpy
 opencv-python
